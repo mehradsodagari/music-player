@@ -10,7 +10,7 @@
   --x-large-space: 2rem;
 }
 body {
-  font-family: Vazirmatn;
+  font-family: sans-serif;
   background-image:
     linear-gradient(to right, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),
     url("./background.jpg");
@@ -90,7 +90,7 @@ body {
 }
 .player-progress-wrapper {
   margin: var(--small-space);
-  max-width: 100%;
+  width: 100%;
   padding: var(--small-space);
 }
 .progress-bar {
@@ -104,7 +104,7 @@ body {
 .progress-bar-inner {
   position: absolute;
   top: 0;
-  right: 0;
+  left: 0;
   height: 100%;
   width: 0%;
   background: #4caf50;
