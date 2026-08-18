@@ -81,10 +81,6 @@ body {
 #play:hover {
   transform: scale(1.1);
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
-}
-#previous:hover,
-#next:hover,
-#play:hover {
   background: darkgray;
   color: white;
 }
@@ -135,12 +131,40 @@ body {
   color: black;
 }
 #playlist {
-  width: 100%;
   margin-top: var(--small-space);
   padding: var(--small-space);
   border-top: 1px solid #ddd;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 }
 #playlist #playlist-header {
   margin-bottom: var(--small-space);
   font-size: 1rem;
+}
+.active {
+  background: rgb(54, 54, 54);
+  color: rgb(254, 254, 254);
+  border-left: 2px solid rgb(0, 0, 0);
+  border-right: 2px solid rgb(0, 0, 0);
+  border-radius: var(--small-space);
+}
+#playlist-list {
+  width: 100%;
+}
+li {
+  transition: all 0.3s;
+  padding: var(--small-space);
+  display: block;
+  width: 100%;
+  text-align: center;
+  cursor: pointer;
+}
+li:hover {
+  background: rgb(213, 213, 213);
+  border-radius: 4px;
+  box-shadow: 0 0 var(--small-space) rgba(0, 0, 0, 0.1);
+  color: black;
 }
