@@ -23,6 +23,7 @@
   --active-item-border-color: #000;
   --playlist-hover-color: #d5d5d5;
   --playlist-hover-text-color: #000;
+  --focus-visible-color: black;
 }
 body {
   font-family: sans-serif;
@@ -55,6 +56,7 @@ body.dark-mode {
   --active-item-border-color: #81c784;
   --playlist-hover-color: #333333;
   --playlist-hover-text-color: #ffffff;
+  --focus-visible-color: white;
 }
 #header {
   background: var(--card-color);
@@ -83,6 +85,9 @@ body.dark-mode {
 #theme-toggle:hover {
   transform: scale(1.1);
 }
+#theme-toggle:active {
+  transform: scale(0.9);
+}
 #main {
   display: flex;
   flex-direction: column;
@@ -101,8 +106,16 @@ body.dark-mode {
   width: 200px;
   height: 200px;
   object-fit: cover;
-  border-radius: var(--small-space);
+  border-radius: 50%;
   margin: var(--small-space);
+}
+#cover.is-play {
+  animation: rotation 10s infinite linear;
+}
+@keyframes rotation {
+  100% {
+    transform: rotate(360deg);
+  }
 }
 #title {
   text-align: center;
@@ -145,6 +158,11 @@ body.dark-mode {
   background: var(--button-hover-color);
   color: var(--button-hover-text-color);
 }
+#previous:active,
+#next:active,
+#play:active {
+  transform: scale(0.9);
+}
 .player-progress-wrapper {
   margin: var(--small-space);
   width: 100%;
@@ -185,11 +203,47 @@ body.dark-mode {
 #playlist-list {
   list-style: none;
 }
+
 #volume {
-  width: 60%;
+  appearance: none;
+  width: 100%;
+  height: var(--small-space);
+  border-radius: 5px;
+  background: #7d7d7d;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: 0.2s;
+  transition: opacity 0.2s;
+}
+#volume:hover {
+  opacity: 1;
+}
+#volume::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #05a96d;
+  cursor: pointer;
+}
+#volume::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #05a96d;
+  cursor: pointer;
 }
 #volume-icon {
   color: var(--volume-icon-color);
+}
+#volume:focus-visible,
+#play:focus-visible,
+#next:focus-visible,
+#previous:focus-visible,
+#theme-toggle:focus-visible {
+  outline: 1px solid var(--focus-visible-color);
+  outline-offset: 2px;
 }
 #playlist {
   margin-top: var(--small-space);
@@ -200,6 +254,11 @@ body.dark-mode {
   align-items: center;
   justify-content: center;
   width: 100%;
+}
+#playlist #playlist-list {
+  scroll-behavior: smooth;
+  max-height: 120px;
+  overflow-y: auto;
 }
 #playlist #playlist-header {
   margin-bottom: var(--small-space);

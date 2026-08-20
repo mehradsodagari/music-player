@@ -17,6 +17,30 @@ const songsList = [
     cover: "./covers/sattar.jpg",
     source: "./songs/khane-be-doosh.mp3",
   },
+  {
+    title: "maach",
+    artist: "afshin",
+    cover: "./covers/afshin.jpg",
+    source: "./songs/maach.mp3",
+  },
+  {
+    title: "yavare hamishe momen",
+    artist: "dariush",
+    cover: "./covers/dariush.jpg",
+    source: "./songs/yavare-hamishe-momen.mp3",
+  },
+  {
+    title: "mara cheshmist khoon afshan",
+    artist: "shajarian",
+    cover: "./covers/shajarian.jpg",
+    source: "./songs/mara-cheshmist-khoon-afshan.mp3",
+  },
+  {
+    title: "saghi",
+    artist: "hayedeh",
+    cover: "./covers/hayedeh.jpg",
+    source: "./songs/saghi.mp3",
+  },
 ];
 let isPlaying = false;
 let currentIndex = 0;
@@ -29,6 +53,7 @@ const volume = document.getElementById("volume");
 const playlist = document.getElementById("playlist-list");
 const themeToggle = document.getElementById("theme-toggle");
 const theme = localStorage.getItem("theme-mode");
+const isPlay = document.getElementById("cover");
 if (theme === "dark-mode") {
   document.body.classList.add(theme);
   document.getElementById("header-btn").classList.add("fa-sun");
@@ -54,6 +79,7 @@ function active(item) {
     .querySelectorAll("li")
     .forEach((li) => li.classList.remove("active"));
   item.classList.add("active");
+  item.scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
 function loadSong(newIndex) {
   currentIndex = newIndex;
@@ -76,12 +102,22 @@ function renderPlaylist() {
     let songInfo = document.createElement("li");
     let artistTitle = document.createElement("p");
     artistTitle.textContent = `${song.title} - ${song.artist}`;
+    songInfo.tabIndex = 0;
     songInfo.addEventListener("click", (event) => {
       loadSong(index);
       audio.play();
       isPlaying = true;
+      isPlay.classList.add("is-play");
+      isPlay.style.animationPlayState = "running";
       document.getElementById("status-icon").classList.remove("fa-circle-play");
       document.getElementById("status-icon").classList.add("fa-circle-pause");
+    });
+    songInfo.addEventListener("keydown", (event) => {
+      if (event.code === "Space" || event.code === "Enter") {
+        event.preventDefault();
+        event.stopPropagation();
+        songInfo.click();
+      }
     });
     songInfo.appendChild(artistTitle);
     playlist.appendChild(songInfo);
@@ -115,11 +151,14 @@ document.getElementById("play").addEventListener("click", () => {
     playBtnIcon.classList.remove("fa-circle-play");
     playBtnIcon.classList.add("fa-circle-pause");
     isPlaying = true;
+    isPlay.classList.add("is-play");
+    isPlay.style.animationPlayState = "running";
   } else {
     audio.pause();
     playBtnIcon.classList.remove("fa-circle-pause");
     playBtnIcon.classList.add("fa-circle-play");
     isPlaying = false;
+    isPlay.style.animationPlayState = "paused";
   }
 });
 document.addEventListener("keydown", (event) => {
@@ -131,17 +170,26 @@ document.addEventListener("keydown", (event) => {
       playBtnIcon.classList.remove("fa-circle-play");
       playBtnIcon.classList.add("fa-circle-pause");
       isPlaying = true;
+      isPlay.style.animationPlayState = "running";
+      isPlay.classList.add("is-play");
     } else {
       audio.pause();
       playBtnIcon.classList.remove("fa-circle-pause");
       playBtnIcon.classList.add("fa-circle-play");
       isPlaying = false;
+      isPlay.style.animationPlayState = "paused";
     }
   } else if (event.code === "ArrowRight") {
     event.preventDefault();
+    if (!isPlaying) {
+      isPlay.classList.remove("is-play");
+    }
     loadSong((currentIndex + 1) % songsList.length);
   } else if (event.code === "ArrowLeft") {
     event.preventDefault();
+    if (!isPlaying) {
+      isPlay.classList.remove("is-play");
+    }
     loadSong((currentIndex - 1 + songsList.length) % songsList.length);
   } else if (event.code === "ArrowUp") {
     event.preventDefault();
@@ -152,13 +200,20 @@ document.addEventListener("keydown", (event) => {
     event.preventDefault();
     audio.volume -= 0.01;
     volume.value = audio.volume * 100;
+    changeVolumeIcon();
   }
 });
 document.getElementById("next").addEventListener("click", () => {
   loadSong((currentIndex + 1) % songsList.length);
+  if (!isPlaying) {
+    isPlay.classList.remove("is-play");
+  }
 });
 document.getElementById("previous").addEventListener("click", () => {
   loadSong((currentIndex - 1 + songsList.length) % songsList.length);
+  if (!isPlaying) {
+    isPlay.classList.remove("is-play");
+  }
 });
 audio.addEventListener("ended", () => {
   loadSong((currentIndex + 1) % songsList.length);
