@@ -292,6 +292,10 @@ li:hover {
   background: var(--active-item-color);
   color: var(--active-item-text-color);
 }
+#state {
+  border: none;
+  background: inherit;
+}
 @media screen and (max-width: 480px) {
   body {
     min-height: 100vh;
